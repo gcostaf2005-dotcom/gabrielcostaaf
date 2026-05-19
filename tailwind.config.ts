@@ -8,15 +8,32 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+      },
       colors: {
-        background: "#0a0a0a",
-        foreground: "#ededed",
-        card: "#161616",
-        border: "#262626",
-        primary: "#3b82f6",
-        success: "#10b981",
+        background: "#08090a",
+        foreground: "#e8e8e8",
+        card: "#111213",
+        border: "#1f2123",
+        muted: "#737373",
+        primary: "#5b8def",
+        success: "#22c55e",
         danger: "#ef4444",
         warning: "#f59e0b",
+        violet: "#8b5cf6",
+      },
+      fontFeatureSettings: {
+        tabular: ["tnum", "lnum"],
+      },
+      keyframes: {
+        "fade-in": {
+          "0%": { opacity: "0", transform: "translateY(4px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+      },
+      animation: {
+        "fade-in": "fade-in 0.25s ease-out",
       },
     },
   },

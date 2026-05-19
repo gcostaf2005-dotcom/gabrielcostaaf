@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/Card";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Calendar, ListTodo, Plus, MapPin, Clock } from "lucide-react";
 import { format, startOfDay, endOfDay, addDays } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -8,7 +9,6 @@ import { TarefaToggle } from "./TarefaToggle";
 
 export default async function AgendaPage() {
   const supabase = await createClient();
-
   const hoje = startOfDay(new Date());
   const fim7Dias = endOfDay(addDays(hoje, 7));
 
@@ -27,76 +27,78 @@ export default async function AgendaPage() {
     .order("data_vencimento", { nullsFirst: false });
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Agenda</h1>
-        <p className="text-foreground/60 mt-1 capitalize">
+    <div className="space-y-6">
+      {/* Header */}
+      <header>
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Agenda</h1>
+        <p className="text-sm text-muted mt-1 capitalize">
           {format(hoje, "EEEE, dd 'de' MMM", { locale: ptBR })}
         </p>
-      </div>
+      </header>
 
       {/* Ações */}
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+      <div className="grid grid-cols-3 gap-2.5">
         <Link
           href="/agenda/eventos"
-          className="p-4 bg-primary hover:bg-primary/90 rounded-xl flex flex-col items-center gap-2 transition-colors text-white"
+          className="h-24 bg-primary hover:bg-primary/90 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all text-white active:scale-[0.98] shadow-sm shadow-primary/20"
         >
-          <Plus size={28} />
-          <span className="font-semibold text-sm md:text-base">Novo Evento</span>
+          <Plus size={22} strokeWidth={2.5} />
+          <span className="font-semibold text-sm">Novo Evento</span>
         </Link>
 
         <Link
           href="/agenda/eventos"
-          className="p-4 bg-card border border-border hover:bg-border/30 rounded-xl flex flex-col items-center gap-2 transition-colors"
+          className="h-24 bg-card border border-border hover:border-border/100 hover:bg-card/80 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all"
         >
-          <Calendar size={28} />
-          <span className="font-semibold text-sm md:text-base">Eventos</span>
+          <Calendar size={22} className="text-muted" />
+          <span className="font-medium text-sm">Eventos</span>
         </Link>
 
         <Link
           href="/agenda/tarefas"
-          className="p-4 bg-card border border-border hover:bg-border/30 rounded-xl flex flex-col items-center gap-2 transition-colors col-span-2 md:col-span-1"
+          className="h-24 bg-card border border-border hover:border-border/100 hover:bg-card/80 rounded-xl flex flex-col items-center justify-center gap-1.5 transition-all"
         >
-          <ListTodo size={28} />
-          <span className="font-semibold text-sm md:text-base">Tarefas</span>
+          <ListTodo size={22} className="text-muted" />
+          <span className="font-medium text-sm">Tarefas</span>
         </Link>
       </div>
 
       {/* Próximos eventos */}
-      <Card className="mb-4">
-        <h2 className="text-lg font-semibold mb-3 flex items-center gap-2">
-          <Calendar size={20} />
-          Próximos 7 dias
-        </h2>
+      <Card>
+        <h2 className="text-sm font-semibold text-foreground/80 mb-3">Próximos 7 dias</h2>
         {!eventos || eventos.length === 0 ? (
-          <p className="text-center py-6 text-foreground/60">Nenhum evento nos próximos 7 dias.</p>
+          <EmptyState
+            icon={Calendar}
+            title="Nenhum evento próximo"
+            description="Toca em Novo Evento pra agendar"
+          />
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="space-y-2">
             {eventos.map((e) => (
               <div
                 key={e.id}
-                className="flex items-start gap-3 p-3 bg-background rounded-lg"
+                className="flex items-start gap-3 py-2.5 border-b border-border/40 last:border-0"
               >
-                <div className="flex-shrink-0 text-center min-w-[48px]">
-                  <div className="text-xs text-foreground/60 uppercase">
+                <div className="flex-shrink-0 w-11 text-center">
+                  <div className="text-[10px] text-muted uppercase tracking-wide">
                     {format(new Date(e.data_inicio), "MMM", { locale: ptBR })}
                   </div>
-                  <div className="text-xl font-bold">
+                  <div className="text-lg font-semibold tabular">
                     {format(new Date(e.data_inicio), "dd")}
                   </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="font-medium">{e.titulo}</div>
-                  <div className="text-sm text-foreground/60 flex flex-wrap items-center gap-3 mt-1">
+                <div className="flex-1 min-w-0 pt-0.5">
+                  <div className="text-sm font-medium">{e.titulo}</div>
+                  <div className="text-xs text-muted flex flex-wrap items-center gap-3 mt-1">
                     {!e.dia_inteiro && (
                       <span className="flex items-center gap-1">
-                        <Clock size={12} />
+                        <Clock size={11} />
                         {format(new Date(e.data_inicio), "HH:mm")}
                       </span>
                     )}
                     {e.local && (
-                      <span className="flex items-center gap-1">
-                        <MapPin size={12} />
+                      <span className="flex items-center gap-1 truncate">
+                        <MapPin size={11} />
                         {e.local}
                       </span>
                     )}
@@ -108,24 +110,28 @@ export default async function AgendaPage() {
         )}
       </Card>
 
-      {/* Tarefas pendentes */}
+      {/* Tarefas */}
       <Card>
         <div className="flex items-center justify-between mb-3">
-          <h2 className="text-lg font-semibold flex items-center gap-2">
-            <ListTodo size={20} />
-            Tarefas pendentes
-          </h2>
+          <h2 className="text-sm font-semibold text-foreground/80">Tarefas pendentes</h2>
           {tarefasPendentes && tarefasPendentes.length > 0 && (
-            <Link href="/agenda/tarefas" className="text-sm text-primary hover:underline">
+            <Link
+              href="/agenda/tarefas"
+              className="text-xs text-muted hover:text-foreground transition-colors"
+            >
               Ver tudo
             </Link>
           )}
         </div>
 
         {!tarefasPendentes || tarefasPendentes.length === 0 ? (
-          <p className="text-center py-6 text-foreground/60">Nenhuma tarefa pendente.</p>
+          <EmptyState
+            icon={ListTodo}
+            title="Tudo em dia ✨"
+            description="Sem tarefas pendentes no momento"
+          />
         ) : (
-          <div className="flex flex-col gap-1">
+          <div className="space-y-0.5">
             {tarefasPendentes.slice(0, 6).map((t) => (
               <TarefaToggle key={t.id} tarefa={t} />
             ))}
