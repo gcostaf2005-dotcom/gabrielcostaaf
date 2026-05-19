@@ -15,6 +15,7 @@ import {
 import type { Investimento } from "@/lib/supabase/types";
 
 const TIPOS: { value: Investimento["tipo"]; label: string }[] = [
+  { value: "consorcio", label: "Consórcio" },
   { value: "renda_fixa", label: "Renda Fixa (CDB, LCI, LCA)" },
   { value: "tesouro", label: "Tesouro Direto" },
   { value: "acoes", label: "Ações" },
@@ -31,6 +32,7 @@ const tipoLabel: Record<Investimento["tipo"], string> = {
   fii: "FII",
   cripto: "Cripto",
   fundos: "Fundo",
+  consorcio: "Consórcio",
   outros: "Outros",
 };
 
@@ -41,6 +43,7 @@ const tipoCor: Record<Investimento["tipo"], string> = {
   fii: "bg-violet/10 text-violet",
   cripto: "bg-warning/10 text-warning",
   fundos: "bg-primary/10 text-primary",
+  consorcio: "bg-violet/10 text-violet",
   outros: "bg-muted/20 text-muted",
 };
 

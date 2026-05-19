@@ -104,7 +104,7 @@ export type Patrimonio = {
 export type Investimento = {
   id: string;
   nome: string;
-  tipo: "renda_fixa" | "tesouro" | "acoes" | "fii" | "cripto" | "fundos" | "outros";
+  tipo: "renda_fixa" | "tesouro" | "acoes" | "fii" | "cripto" | "fundos" | "consorcio" | "outros";
   valor_aporte: number;
   data_aporte: string;
   valor_atual: number | null;

@@ -20,6 +20,7 @@ const tipoLabel: Record<Investimento["tipo"], string> = {
   fii: "FIIs",
   cripto: "Criptos",
   fundos: "Fundos",
+  consorcio: "Consórcios",
   outros: "Outros",
 };
 
@@ -30,6 +31,7 @@ const tipoCor: Record<Investimento["tipo"], string> = {
   fii: "#8b5cf6",
   cripto: "#f59e0b",
   fundos: "#06b6d4",
+  consorcio: "#a855f7",
   outros: "#737373",
 };
 

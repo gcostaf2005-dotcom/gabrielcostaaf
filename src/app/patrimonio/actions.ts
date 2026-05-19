@@ -52,6 +52,7 @@ export async function criarInvestimento(formData: FormData) {
     | "fii"
     | "cripto"
     | "fundos"
+    | "consorcio"
     | "outros";
   const valor_aporte = Number(formData.get("valor_aporte"));
   const data_aporte = String(formData.get("data_aporte") ?? "");
