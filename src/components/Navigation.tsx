@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Dumbbell, Wallet, Calendar } from "lucide-react";
+import { Home, Dumbbell, Wallet, Calendar, Wallet2 } from "lucide-react";
 
 const links = [
   { href: "/", label: "Início", icon: Home },
   { href: "/treinos", label: "Treinos", icon: Dumbbell },
   { href: "/financas", label: "Finanças", icon: Wallet },
+  { href: "/patrimonio", label: "Patrimônio", icon: Wallet2 },
   { href: "/agenda", label: "Agenda", icon: Calendar },
 ];
 
@@ -58,7 +59,7 @@ export function Navigation() {
                 active ? "text-primary" : "text-muted"
               }`}
             >
-              <Icon size={22} strokeWidth={2} />
+              <Icon size={20} strokeWidth={2} />
               <span className="text-[10px] font-medium tracking-wide">{label}</span>
             </Link>
           );

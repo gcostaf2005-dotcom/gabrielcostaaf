@@ -87,3 +87,29 @@ export type Tarefa = {
   prioridade: number | null;
   created_at: string;
 };
+
+export type Patrimonio = {
+  id: string;
+  tipo: "bem" | "experiencia";
+  nome: string;
+  categoria: string | null;
+  valor: number;
+  data: string;
+  valor_atual: number | null;
+  notas: string | null;
+  ativo: boolean;
+  created_at: string;
+};
+
+export type Investimento = {
+  id: string;
+  nome: string;
+  tipo: "renda_fixa" | "tesouro" | "acoes" | "fii" | "cripto" | "fundos" | "outros";
+  valor_aporte: number;
+  data_aporte: string;
+  valor_atual: number | null;
+  instituicao: string | null;
+  notas: string | null;
+  ativo: boolean;
+  created_at: string;
+};
