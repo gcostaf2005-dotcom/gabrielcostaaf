@@ -12,11 +12,15 @@ import type { Patrimonio } from "@/lib/supabase/types";
 
 const CATEGORIAS_BENS = [
   "Veículo",
+  "Relógio",
+  "Modelo",
   "Eletrônico",
   "Móvel",
   "Imóvel",
   "Eletrodoméstico",
   "Acessório",
+  "Joia",
+  "Coleção",
   "Outro",
 ];
 
@@ -34,6 +38,18 @@ export default async function BensPage() {
   const total = lista.reduce((acc, p) => acc + Number(p.valor_atual ?? p.valor), 0);
   const totalCompra = lista.reduce((acc, p) => acc + Number(p.valor), 0);
   const depreciacao = totalCompra - total;
+
+  // Soma por categoria
+  const porCategoria: Record<string, { total: number; count: number }> = {};
+  lista.forEach((p) => {
+    const cat = p.categoria || "Sem categoria";
+    if (!porCategoria[cat]) porCategoria[cat] = { total: 0, count: 0 };
+    porCategoria[cat].total += Number(p.valor_atual ?? p.valor);
+    porCategoria[cat].count += 1;
+  });
+  const breakdownCategorias = Object.entries(porCategoria)
+    .map(([cat, d]) => ({ categoria: cat, ...d, pct: total > 0 ? (d.total / total) * 100 : 0 }))
+    .sort((a, b) => b.total - a.total);
 
   async function deletarAction(formData: FormData) {
     "use server";
@@ -60,20 +76,63 @@ export default async function BensPage() {
 
       <header>
         <h1 className="text-2xl md:text-3xl font-semibold tracking-tight">Bens</h1>
-        <p className="text-sm text-muted mt-1">
-          {lista.length} bens · Total atual:{" "}
-          <span className="text-foreground/80 tabular">
-            R$ {total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
-          </span>
-          {depreciacao !== 0 && (
-            <span className={depreciacao > 0 ? "text-danger" : "text-success"}>
-              {" "}
-              ({depreciacao > 0 ? "−" : "+"}R${" "}
-              {Math.abs(depreciacao).toLocaleString("pt-BR", { minimumFractionDigits: 2 })})
-            </span>
-          )}
-        </p>
+        <p className="text-sm text-muted mt-1">{lista.length} bens registrados</p>
       </header>
+
+      {/* Resumo total */}
+      {lista.length > 0 && (
+        <Card>
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <p className="text-xs text-muted uppercase tracking-wide">Total em bens</p>
+              <p className="text-2xl md:text-3xl font-semibold tabular tracking-tight mt-1">
+                R$ {total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              </p>
+              {depreciacao !== 0 && (
+                <p
+                  className={`text-xs mt-1 ${
+                    depreciacao > 0 ? "text-danger" : "text-success"
+                  }`}
+                >
+                  {depreciacao > 0 ? "Depreciação" : "Valorização"}:{" "}
+                  {depreciacao > 0 ? "−" : "+"}R${" "}
+                  {Math.abs(depreciacao).toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {breakdownCategorias.length > 1 && (
+            <div className="pt-3 border-t border-border/40">
+              <p className="text-xs text-muted mb-3">Por categoria</p>
+              <div className="space-y-2">
+                {breakdownCategorias.map((b) => (
+                  <div key={b.categoria} className="flex items-center gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1 text-sm">
+                        <span>
+                          {b.categoria}{" "}
+                          <span className="text-muted text-xs">({b.count})</span>
+                        </span>
+                        <span className="tabular">
+                          R${" "}
+                          {b.total.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                      <div className="h-1 bg-background rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-primary rounded-full"
+                          style={{ width: `${b.pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </Card>
+      )}
 
       <Card>
         <h2 className="text-sm font-semibold text-foreground/80 mb-4">Adicionar bem</h2>
