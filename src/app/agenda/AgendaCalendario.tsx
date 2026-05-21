@@ -24,8 +24,11 @@ import {
   MapPin,
   CalendarPlus,
   ListPlus,
+  Film,
+  Smartphone,
 } from "lucide-react";
 import { TarefaToggle } from "./TarefaToggle";
+import { rotinaDoDia, META_STORIES } from "@/lib/rotinaConteudo";
 import type { Evento, Tarefa } from "@/lib/supabase/types";
 
 const DIAS_SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -55,6 +58,7 @@ export function AgendaCalendario({ eventos, tarefas }: Props) {
 
   const eventosSel = eventosDoDia(diaSelecionado);
   const tarefasSel = tarefasDoDia(diaSelecionado);
+  const rotinaSel = rotinaDoDia(diaSelecionado.getDay());
 
   return (
     <div className="space-y-5">
@@ -253,6 +257,44 @@ export function AgendaCalendario({ eventos, tarefas }: Props) {
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {/* Rotina de conteúdo do dia */}
+        {rotinaSel && (
+          <div className="mt-4 pt-4 border-t border-border/40">
+            <h4 className="text-xs uppercase tracking-wide text-muted font-semibold mb-3">
+              Conteúdo do dia
+            </h4>
+            <div className="space-y-2">
+              {rotinaSel.reel ? (
+                <div className="flex items-center gap-2.5 p-2.5 bg-violet/10 rounded-lg">
+                  <Film size={16} className="text-violet flex-shrink-0" />
+                  <div>
+                    <span className="text-[10px] uppercase tracking-wide text-violet font-semibold">
+                      Reel
+                    </span>
+                    <p className="text-sm font-medium">{rotinaSel.reel}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2.5 p-2.5 bg-card rounded-lg">
+                  <Film size={16} className="text-muted flex-shrink-0" />
+                  <p className="text-sm text-muted">Sem reel — dia mais leve</p>
+                </div>
+              )}
+
+              <div className="flex items-start gap-2.5 p-2.5 bg-primary/10 rounded-lg">
+                <Smartphone size={16} className="text-primary flex-shrink-0 mt-0.5" />
+                <div className="min-w-0">
+                  <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">
+                    Stories
+                  </span>
+                  <p className="text-sm">{rotinaSel.stories.join(" · ")}</p>
+                  <p className="text-[11px] text-muted mt-0.5">{META_STORIES}</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
       </div>

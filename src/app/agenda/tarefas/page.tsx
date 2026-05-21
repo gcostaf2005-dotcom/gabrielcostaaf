@@ -3,9 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { Card } from "@/components/ui/Card";
 import { Input, Textarea, Select } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Film, Smartphone } from "lucide-react";
 import { criarTarefa } from "../actions";
 import { TarefaToggle } from "../TarefaToggle";
+import { ROTINA_CONTEUDO, META_STORIES } from "@/lib/rotinaConteudo";
 
 export default async function TarefasPage() {
   const supabase = await createClient();
@@ -29,6 +30,38 @@ export default async function TarefasPage() {
       </Link>
 
       <h1 className="text-3xl font-bold mb-6">Tarefas</h1>
+
+      {/* Rotina de conteúdo semanal */}
+      <Card className="mb-6">
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="text-lg font-semibold">Rotina de Conteúdo</h2>
+          <span className="text-xs text-muted">{META_STORIES}</span>
+        </div>
+        <div className="space-y-1.5">
+          {ROTINA_CONTEUDO.map((r) => (
+            <div
+              key={r.dia}
+              className="flex items-center gap-3 p-2.5 bg-background rounded-lg"
+            >
+              <div className="flex-shrink-0 w-10 text-xs font-semibold uppercase text-muted">
+                {r.label.slice(0, 3)}
+              </div>
+              <div className="flex items-center gap-1.5 flex-shrink-0 w-40">
+                <Film size={13} className={r.reel ? "text-violet" : "text-muted"} />
+                <span className={`text-sm ${r.reel ? "" : "text-muted"}`}>
+                  {r.reel ?? "—"}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                <Smartphone size={13} className="text-primary flex-shrink-0" />
+                <span className="text-xs text-foreground/70 truncate">
+                  {r.stories.join(" · ")}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Card>
 
       <Card className="mb-6">
         <h2 className="text-lg font-semibold mb-4">Nova tarefa</h2>
