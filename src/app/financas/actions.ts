@@ -3,34 +3,48 @@
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
-export async function criarLancamento(formData: FormData) {
-  const supabase = await createClient();
+export type FormState = { ok?: boolean; error?: string };
 
-  const data = String(formData.get("data") ?? "");
-  const descricao = String(formData.get("descricao") ?? "").trim();
-  const valor = Number(formData.get("valor"));
-  const tipo = String(formData.get("tipo")) as "entrada" | "saida";
-  const categoria_id = String(formData.get("categoria_id") ?? "") || null;
-  const conta_id = String(formData.get("conta_id") ?? "") || null;
-  const notas = String(formData.get("notas") ?? "").trim() || null;
+export async function criarLancamento(
+  _prev: FormState,
+  formData: FormData
+): Promise<FormState> {
+  try {
+    const supabase = await createClient();
 
-  if (!descricao) throw new Error("Descrição obrigatória");
-  if (!valor || valor <= 0) throw new Error("Valor deve ser maior que zero");
+    const data = String(formData.get("data") ?? "");
+    const descricao = String(formData.get("descricao") ?? "").trim();
+    const valorRaw = formData.get("valor");
+    const valor = Number(valorRaw);
+    const tipo = String(formData.get("tipo")) as "entrada" | "saida";
+    const categoria_id = String(formData.get("categoria_id") ?? "") || null;
+    const conta_id = String(formData.get("conta_id") ?? "") || null;
+    const notas = String(formData.get("notas") ?? "").trim() || null;
 
-  const { error } = await supabase.from("lancamentos").insert({
-    data: data || new Date().toISOString().slice(0, 10),
-    descricao,
-    valor,
-    tipo,
-    categoria_id,
-    conta_id,
-    notas,
-  });
+    if (!descricao) return { error: "Descrição obrigatória" };
+    if (!valorRaw || isNaN(valor) || valor <= 0)
+      return { error: "Valor deve ser maior que zero" };
+    if (tipo !== "entrada" && tipo !== "saida")
+      return { error: "Tipo inválido (escolha Entrada ou Saída)" };
 
-  if (error) throw new Error(error.message);
+    const { error } = await supabase.from("lancamentos").insert({
+      data: data || new Date().toISOString().slice(0, 10),
+      descricao,
+      valor,
+      tipo,
+      categoria_id,
+      conta_id,
+      notas,
+    });
 
-  revalidatePath("/financas");
-  revalidatePath("/financas/lancamentos");
+    if (error) return { error: `Banco: ${error.message}` };
+
+    revalidatePath("/financas");
+    revalidatePath("/financas/lancamentos");
+    return { ok: true };
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Erro desconhecido" };
+  }
 }
 
 export async function deletarLancamento(id: string) {

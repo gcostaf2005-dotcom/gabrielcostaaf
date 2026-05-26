@@ -1,24 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useActionState, useEffect, useRef } from "react";
 import { Input, Textarea, Select } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
-import { criarLancamento } from "../actions";
+import { criarLancamento, type FormState } from "../actions";
 import type { CategoriaFinanca, ContaFinanca } from "@/lib/supabase/types";
+import { CheckCircle2, AlertCircle } from "lucide-react";
 
 interface Props {
   categorias: CategoriaFinanca[];
   contas: ContaFinanca[];
 }
 
+const initialState: FormState = {};
+
 export function NovoLancamentoForm({ categorias, contas }: Props) {
   const [tipo, setTipo] = useState<"entrada" | "saida">("saida");
+  const [state, formAction, pending] = useActionState(criarLancamento, initialState);
+  const formRef = useRef<HTMLFormElement>(null);
   const hoje = new Date().toISOString().slice(0, 10);
 
   const categoriasFiltradas = categorias.filter((c) => c.tipo === tipo);
 
+  // Reseta o form em caso de sucesso
+  useEffect(() => {
+    if (state?.ok) {
+      formRef.current?.reset();
+    }
+  }, [state]);
+
   return (
-    <form action={criarLancamento} className="flex flex-col gap-3">
+    <form ref={formRef} action={formAction} className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-2">
         <button
           type="button"
@@ -78,8 +90,22 @@ export function NovoLancamentoForm({ categorias, contas }: Props) {
 
       <Textarea name="notas" label="Notas (opcional)" />
 
-      <Button type="submit" className="self-start">
-        Registrar
+      {/* Feedback */}
+      {state?.error && (
+        <div className="flex items-start gap-2 p-3 bg-danger/10 border border-danger/30 rounded-lg text-sm text-danger">
+          <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+          <span>{state.error}</span>
+        </div>
+      )}
+      {state?.ok && (
+        <div className="flex items-start gap-2 p-3 bg-success/10 border border-success/30 rounded-lg text-sm text-success">
+          <CheckCircle2 size={16} className="flex-shrink-0 mt-0.5" />
+          <span>Lançamento registrado!</span>
+        </div>
+      )}
+
+      <Button type="submit" disabled={pending} className="self-start">
+        {pending ? "Registrando..." : "Registrar"}
       </Button>
     </form>
   );
