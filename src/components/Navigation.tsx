@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Dumbbell, Wallet, Calendar, Wallet2 } from "lucide-react";
+import { Home, Dumbbell, Wallet, Calendar, Wallet2, Sunrise } from "lucide-react";
 
 const links = [
   { href: "/", label: "Início", icon: Home },
+  { href: "/rotina", label: "Rotina", icon: Sunrise },
   { href: "/treinos", label: "Treinos", icon: Dumbbell },
   { href: "/financas", label: "Finanças", icon: Wallet },
   { href: "/patrimonio", label: "Patrimônio", icon: Wallet2 },
