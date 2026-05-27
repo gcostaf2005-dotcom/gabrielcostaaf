@@ -508,6 +508,7 @@ export const ROTINA_SABADO: BlocoDia[] = [
     titulo: "Almoço + tempo livre",
     categoria: "refeicao",
     conselheiro: "Epicuro",
+    principio: "Pausa real. Sem tela. Família/amigos.",
   },
   {
     inicio: "14:00",
@@ -594,6 +595,7 @@ export const ROTINA_DOMINGO: BlocoDia[] = [
     titulo: "Almoço",
     categoria: "refeicao",
     conselheiro: "Epicuro",
+    principio: "Pausa.",
   },
   {
     inicio: "14:00",
@@ -621,6 +623,7 @@ export const ROTINA_DOMINGO: BlocoDia[] = [
     titulo: "Jantar",
     categoria: "refeicao",
     conselheiro: "Epicuro",
+    principio: "Refeição com presença.",
   },
   {
     inicio: "18:30",
