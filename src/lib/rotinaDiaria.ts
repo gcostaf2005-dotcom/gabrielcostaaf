@@ -1,9 +1,10 @@
-// Rotina diária — versão dura (Gabriel)
-// Acorda 4:30 · Chega da faculdade 22:10 · Dorme 22:30 (6h sono nos dias úteis)
-// Fim de semana: dorme 8h pra compensar
+// Rotina diária — Gabriel
+// Constraints reais: academia · escritório 8h · faculdade 18h-22h · sono 6h15
+// "A vida é feita de constantes desequilíbrios"
 
 export type Categoria =
   | "ritual"
+  | "academia"
   | "leitura"
   | "estudos"
   | "trabalho"
@@ -15,7 +16,7 @@ export type Categoria =
   | "sono";
 
 export type BlocoDia = {
-  inicio: string; // "HH:MM"
+  inicio: string;
   fim: string;
   titulo: string;
   categoria: Categoria;
@@ -26,6 +27,7 @@ export type BlocoDia = {
 
 export const CATEGORIA_COR: Record<Categoria, string> = {
   ritual: "#8b5cf6",
+  academia: "#ef4444",
   leitura: "#22c55e",
   estudos: "#22c55e",
   trabalho: "#5b8def",
@@ -39,6 +41,7 @@ export const CATEGORIA_COR: Record<Categoria, string> = {
 
 export const CATEGORIA_LABEL: Record<Categoria, string> = {
   ritual: "Ritual",
+  academia: "Academia",
   leitura: "Leitura",
   estudos: "Estudos",
   trabalho: "Trabalho",
@@ -50,56 +53,70 @@ export const CATEGORIA_LABEL: Record<Categoria, string> = {
   sono: "Sono",
 };
 
-// Dias úteis (seg-sex) — pegada dura com faculdade à noite
+// Dias úteis (seg-sex)
 export const ROTINA_SEMANA: BlocoDia[] = [
   {
-    inicio: "04:30",
+    inicio: "04:45",
     fim: "05:00",
-    titulo: "Acordar + ritual matinal",
+    titulo: "Acordar + ritual rápido",
     categoria: "ritual",
     conselheiro: "Marco Aurélio",
-    principio: "Comece o dia decidindo quem você vai ser. O dia é seu, não dos outros.",
-    detalhes:
-      "Água 500ml na hora. Sem celular nos primeiros 30min. Banho frio 2min. Journaling 5min: '3 coisas que vou conquistar hoje'.",
+    principio: "Sem snooze. O dia é seu antes de ser de qualquer um.",
+    detalhes: "Água 500ml. Banheiro. Veste roupa de treino. Sem celular.",
   },
   {
     inicio: "05:00",
     fim: "06:30",
-    titulo: "Leitura profunda",
-    categoria: "leitura",
-    conselheiro: "Warren Buffett",
-    principio: "Conhecimento se acumula como juros compostos. Hábito diário, não esporádico.",
-    detalhes:
-      "90min de leitura concentrada. Livro de negócio, filosofia ou técnico. Notas em caderno físico.",
+    titulo: "Academia (treino + retorno)",
+    categoria: "academia",
+    conselheiro: "Marco Aurélio",
+    principio: "Disciplina física antes de qualquer trabalho mental. Corpo forte, mente clara.",
+    detalhes: "1h de treino + deslocamento. Cardio leve + força. Audiobook no caminho se quiser.",
   },
   {
     inicio: "06:30",
     fim: "07:00",
-    titulo: "Café + planejamento",
+    titulo: "Banho + café da manhã",
     categoria: "ritual",
-    conselheiro: "Ray Dalio",
-    principio: "Principles. Defina as 3 MITs (Most Important Tasks) do dia antes de começar.",
-    detalhes: "Café sem tela. Revisa agenda. Define os 3 alvos do dia — só esses importam.",
+    conselheiro: "Sêneca",
+    principio: "Comer com presença. Café sem tela é descanso, com tela é estresse.",
+    detalhes: "Banho rápido. Café da manhã sólido (proteína + fruta + gordura boa).",
   },
   {
     inicio: "07:00",
-    fim: "09:00",
-    titulo: "Gravação de conteúdo",
-    categoria: "conteudo",
-    conselheiro: "Alex Hormozi",
-    principio: "Volume + leverage. Bateladar é a única forma de ter ROI em conteúdo.",
-    detalhes:
-      "Pico criativo. Grava o Reel do dia + Stories. Segunda/Terça pode bateladar 3-4 Reels da semana.",
+    fim: "07:30",
+    titulo: "Leitura focada (30min)",
+    categoria: "leitura",
+    conselheiro: "Warren Buffett",
+    principio: "30min concentrado vale mais que 2h disperso. Constância > intensidade.",
+    detalhes: "Livro físico, sem celular. Negócios, IA ou filosofia.",
   },
   {
-    inicio: "09:00",
-    fim: "12:00",
-    titulo: "Trabalho — CNDA / Vexum",
+    inicio: "07:30",
+    fim: "08:00",
+    titulo: "Deslocamento pro escritório (audiobook)",
+    categoria: "deslocamento",
+    conselheiro: "Diógenes",
+    principio: "Mente trabalha em movimento. Aproveita ou desperdiça — não tem meio termo.",
+    detalhes: "Audiobook, podcast ou silêncio mental. NUNCA scroll de feed.",
+  },
+  {
+    inicio: "08:00",
+    fim: "10:30",
+    titulo: "Trabalho Deep Work — CNDA/Vexum",
     categoria: "trabalho",
     conselheiro: "Jeff Bezos",
     principio: "Decisões importantes antes das 10h. Cérebro limpo decide melhor.",
-    detalhes:
-      "3h de execução pesada. Outreach (cold WhatsApp/LinkedIn), calls de venda, propostas, follow-ups.",
+    detalhes: "Outreach pesado (WhatsApp + LinkedIn), calls de venda, propostas. Modo avião.",
+  },
+  {
+    inicio: "10:30",
+    fim: "12:00",
+    titulo: "Gravação de conteúdo",
+    categoria: "conteudo",
+    conselheiro: "Alex Hormozi",
+    principio: "Volume + leverage. Bateladar Reels é a única forma de ter ROI em conteúdo.",
+    detalhes: "Reels da semana + Stories do dia. Energia matinal residual é ouro pra criar.",
   },
   {
     inicio: "12:00",
@@ -107,8 +124,8 @@ export const ROTINA_SEMANA: BlocoDia[] = [
     titulo: "Almoço + descomprimir",
     categoria: "descanso",
     conselheiro: "Sêneca",
-    principio: "Descanso bem usado é parte do trabalho. Não desperdice.",
-    detalhes: "Refeição sem tela. 15min de caminhada/respiração depois. Pausa REAL.",
+    principio: "Pausa REAL. Sem tela. 15min de caminhada depois.",
+    detalhes: "Refeição com presença. Caminhada curta pra resetar.",
   },
   {
     inicio: "13:00",
@@ -117,115 +134,115 @@ export const ROTINA_SEMANA: BlocoDia[] = [
     categoria: "edicao",
     conselheiro: "Cal Newport",
     principio: "Deep Work em bloco contínuo. Edita TUDO de uma vez.",
-    detalhes:
-      "2h30 de edição. Modo avião, fone, sem notificação. Sai com os Reels prontos pra próximos 2-3 dias.",
+    detalhes: "2h30 sem interrupção. Fone, modo avião. Sai com Reels prontos pra 2-3 dias.",
   },
   {
     inicio: "15:30",
-    fim: "18:00",
-    titulo: "Trabalho extra / Estudos técnicos",
+    fim: "17:30",
+    titulo: "Estudos / Trabalho extra",
     categoria: "estudos",
     conselheiro: "Naval Ravikant",
-    principio: "Especifique conhecimento. Aprenda algo que vira leverage.",
-    detalhes:
-      "2h30 flexíveis. Calls que sobraram, estudo de IA, cursos, frameworks. Bloco de 'aprender + executar'.",
+    principio: "Especifique conhecimento. Aprenda algo que escala — não só executa.",
+    detalhes: "Curso de IA, frameworks novos, OU follow-ups e calls que sobraram.",
+  },
+  {
+    inicio: "17:30",
+    fim: "18:00",
+    titulo: "Lanche + deslocamento pra faculdade",
+    categoria: "deslocamento",
+    conselheiro: "Aristóteles",
+    principio: "Transição calma. Já come algo pra não perder energia na aula.",
+    detalhes: "Lanche rápido (proteína). Audiobook no caminho.",
   },
   {
     inicio: "18:00",
-    fim: "19:00",
-    titulo: "Lanche + deslocamento pra faculdade",
-    categoria: "deslocamento",
-    conselheiro: "Diógenes",
-    principio: "Aproveite o caminho — áudio livro ou silêncio. Não jogue tempo fora.",
-    detalhes: "Comer leve antes. No deslocamento: podcast, audiobook ou silêncio mental.",
-  },
-  {
-    inicio: "19:00",
     fim: "22:00",
     titulo: "Faculdade",
     categoria: "faculdade",
     conselheiro: "Aristóteles",
-    principio: "Excelência é hábito. Mesmo cansado, presença plena.",
-    detalhes: "Aulas presenciais. Foco no que importa — não toda matéria, mas a que aplica.",
+    principio: "Excelência é hábito. Presença plena, mesmo cansado.",
+    detalhes: "Foca no que realmente importa da grade. Não toda matéria, mas a aplicável.",
   },
   {
-    inicio: "22:00",
+    inicio: "22:10",
     fim: "22:30",
-    titulo: "Volta pra casa + wind down rápido",
+    titulo: "Volta + wind down",
     categoria: "ritual",
     conselheiro: "Matthew Walker",
-    principio: "Wind down de 20min mínimo. Sem tela após 22:20.",
-    detalhes:
-      "Banho rápido, água, escovar. Journaling de 3min: 'O que aprendi hoje?'. LUZES BAIXAS.",
+    principio: "Sem tela após 22:20. Luzes baixas. Quarto frio.",
+    detalhes: "Banho rápido se precisar. 3min de journaling: 'O que aprendi hoje?'",
   },
   {
     inicio: "22:30",
-    fim: "04:30",
-    titulo: "Sono (6h)",
+    fim: "04:45",
+    titulo: "Sono (6h15)",
     categoria: "sono",
     conselheiro: "Jeff Bezos",
-    principio:
-      "6h é o piso, não o teto. Compensa no fim de semana (8h). Cochilo de 20min no almoço se cansar muito.",
-    detalhes:
-      "Quarto frio (~19°C), escuro, sem celular. Se acordar à noite, NÃO pega o celular.",
+    principio: "6h15 é o piso aceitável. Compensa no fim de semana (8h+).",
+    detalhes: "Sem celular no quarto. Cochilo de 20min no almoço se cansar muito.",
   },
 ];
 
-// Fim de semana — recuperar sono, gravar batelada, planejar
+// Fim de semana
 export const ROTINA_FIM_SEMANA: BlocoDia[] = [
   {
     inicio: "06:30",
     fim: "07:00",
-    titulo: "Acordar com sono recuperado",
+    titulo: "Acordar (já dormiu 8h+)",
     categoria: "ritual",
     conselheiro: "Marco Aurélio",
-    principio: "Disciplina sem rigidez. Sábado/domingo o corpo precisa.",
-    detalhes: "Dorme 8h (22:30 → 06:30). Café tranquilo, sem celular nos primeiros 30min.",
+    principio: "Disciplina sem rigidez. Sábado/domingo o corpo recupera.",
+    detalhes: "Dormiu 22:30 → 06:30 = 8h. Café tranquilo sem celular.",
   },
   {
     inicio: "07:00",
-    fim: "09:00",
+    fim: "08:30",
+    titulo: "Academia (mais leve)",
+    categoria: "academia",
+    conselheiro: "Marco Aurélio",
+    principio: "Treino de recuperação. Cardio ou mobilidade.",
+  },
+  {
+    inicio: "08:30",
+    fim: "10:30",
     titulo: "Leitura longa + Think Week",
     categoria: "leitura",
     conselheiro: "Bill Gates",
-    principio: "Sábado/domingo é hora de pensar grande, não executar.",
-    detalhes: "2h de leitura profunda. Livro inteiro num dia? Ensaios longos. Reflexão.",
+    principio: "Fim de semana é pra pensar grande, não executar.",
+    detalhes: "2h de leitura profunda. Livro inteiro num final de semana.",
   },
   {
-    inicio: "09:00",
-    fim: "12:00",
-    titulo: "Gravação em batelada (sábado)",
+    inicio: "10:30",
+    fim: "13:00",
+    titulo: "Gravação em batelada (sábado) / Descanso (domingo)",
     categoria: "conteudo",
     conselheiro: "Alex Hormozi",
-    principio: "Sábado de manhã = ouro pra gravar 5-7 Reels da próxima semana.",
-    detalhes: "Sábado: grava conteúdo. Domingo: descanso real ou planejamento.",
+    principio: "Sábado de manhã = 4-7 Reels gravados pra próxima semana.",
   },
   {
-    inicio: "12:00",
-    fim: "14:00",
+    inicio: "13:00",
+    fim: "15:00",
     titulo: "Almoço + tempo livre",
     categoria: "descanso",
     conselheiro: "Epicuro",
-    principio: "Prazeres simples bem aproveitados.",
-    detalhes: "Família, amigos, comida boa, descanso de verdade.",
+    principio: "Prazeres simples bem aproveitados. Família, amigos.",
   },
   {
-    inicio: "14:00",
-    fim: "17:00",
+    inicio: "15:00",
+    fim: "17:30",
     titulo: "Faculdade / projetos pessoais",
     categoria: "faculdade",
     conselheiro: "Naval Ravikant",
-    principio: "Domingo = projetos que importam pra você.",
-    detalhes: "Trabalhos acadêmicos pendentes ou projetos pessoais que escalam.",
+    principio: "Projetos que importam pra você. Trabalhos pendentes.",
   },
   {
-    inicio: "17:00",
+    inicio: "17:30",
     fim: "19:00",
     titulo: "Planejamento semanal (domingo)",
     categoria: "estudos",
     conselheiro: "Ray Dalio",
-    principio: "Domingo à tarde = revisar semana passada + planejar próxima.",
-    detalhes: "3 vitórias da semana / 3 lições / 3 ajustes. Define MITs da próxima semana.",
+    principio: "Domingo à tarde: revisar semana + planejar próxima.",
+    detalhes: "3 vitórias / 3 lições / 3 ajustes. Define MITs da semana.",
   },
   {
     inicio: "19:00",
@@ -241,7 +258,7 @@ export const ROTINA_FIM_SEMANA: BlocoDia[] = [
     titulo: "Leitura + journaling semanal",
     categoria: "leitura",
     conselheiro: "Sócrates",
-    principio: "Examine sua vida. A vida não examinada não vale a pena ser vivida.",
+    principio: "Examine sua vida. Onde errei? Onde acertei?",
   },
   {
     inicio: "22:00",
@@ -249,7 +266,7 @@ export const ROTINA_FIM_SEMANA: BlocoDia[] = [
     titulo: "Sono (8h30)",
     categoria: "sono",
     conselheiro: "Matthew Walker",
-    principio: "Sono restaurador. Compensa os 6h dos dias com faculdade.",
+    principio: "Compensa os 6h15 dos dias com faculdade.",
   },
 ];
 
