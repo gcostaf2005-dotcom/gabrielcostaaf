@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from "react";
 import {
-  ROTINA_SEMANA,
-  ROTINA_FIM_SEMANA,
   rotinaDoDiaSemana,
   blocoAtual,
   CATEGORIA_COR,
   CATEGORIA_LABEL,
+  TEMA_DIA,
   type BlocoDia,
 } from "@/lib/rotinaDiaria";
 import { Card } from "@/components/ui/Card";
