@@ -9,7 +9,9 @@ import {
   TEMA_DIA,
   type BlocoDia,
 } from "@/lib/rotinaDiaria";
+import { ROTINA_CONTEUDO, META_STORIES, rotinaDoDia as rotinaConteudoDoDia } from "@/lib/rotinaConteudo";
 import { Card } from "@/components/ui/Card";
+import { Film, Smartphone } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -42,6 +44,9 @@ export function RotinaView() {
     const m = Math.floor((diffMs % 3600000) / 60000);
     return `${h}h${m.toString().padStart(2, "0")}`;
   })();
+
+  // Conteúdo do dia selecionado
+  const conteudoDoDia = rotinaConteudoDoDia(diaSel);
 
   return (
     <div className="space-y-6">
@@ -183,6 +188,88 @@ export function RotinaView() {
         <p className="text-xs text-muted mt-4 pt-3 border-t border-border/40">
           Dias úteis dormem 6h. Fim de semana 8h30. Compensação semanal = ~50h sono / 7 dias ≈
           7h/dia em média.
+        </p>
+      </Card>
+
+      {/* Conteúdo do dia selecionado */}
+      {conteudoDoDia && (
+        <Card>
+          <h3 className="text-sm font-semibold mb-3">
+            🎬 Conteúdo de {conteudoDoDia.label}
+          </h3>
+          <div className="space-y-2">
+            {conteudoDoDia.reel ? (
+              <div className="flex items-center gap-2.5 p-3 bg-violet/10 rounded-lg">
+                <Film size={18} className="text-violet flex-shrink-0" />
+                <div>
+                  <span className="text-[10px] uppercase tracking-wide text-violet font-semibold">
+                    Reel / TikTok
+                  </span>
+                  <p className="text-sm font-medium">{conteudoDoDia.reel}</p>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2.5 p-3 bg-card rounded-lg">
+                <Film size={18} className="text-muted flex-shrink-0" />
+                <p className="text-sm text-muted">Sem Reel — dia mais leve</p>
+              </div>
+            )}
+            <div className="flex items-start gap-2.5 p-3 bg-primary/10 rounded-lg">
+              <Smartphone size={18} className="text-primary flex-shrink-0 mt-0.5" />
+              <div className="min-w-0">
+                <span className="text-[10px] uppercase tracking-wide text-primary font-semibold">
+                  Stories
+                </span>
+                <p className="text-sm">{conteudoDoDia.stories.join(" · ")}</p>
+                <p className="text-[11px] text-muted mt-0.5">{META_STORIES}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+      )}
+
+      {/* Conteúdo da semana toda */}
+      <Card>
+        <div className="flex items-baseline justify-between mb-3">
+          <h3 className="text-sm font-semibold">📺 Conteúdo da semana</h3>
+          <span className="text-xs text-muted">{META_STORIES}</span>
+        </div>
+        <div className="space-y-1.5">
+          {ROTINA_CONTEUDO.map((r) => {
+            const selecionado = r.dia === diaSel;
+            return (
+              <div
+                key={r.dia}
+                className={`flex items-center gap-3 p-2.5 rounded-lg transition-all ${
+                  selecionado
+                    ? "bg-primary/10 border border-primary/30"
+                    : "bg-background"
+                }`}
+              >
+                <div className="flex-shrink-0 w-10 text-xs font-semibold uppercase text-muted">
+                  {r.label.slice(0, 3)}
+                </div>
+                <div className="flex items-center gap-1.5 flex-shrink-0 w-44">
+                  <Film
+                    size={13}
+                    className={r.reel ? "text-violet" : "text-muted"}
+                  />
+                  <span className={`text-sm ${r.reel ? "" : "text-muted"}`}>
+                    {r.reel ?? "—"}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                  <Smartphone size={13} className="text-primary flex-shrink-0" />
+                  <span className="text-xs text-foreground/70 truncate">
+                    {r.stories.join(" · ")}
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <p className="text-[11px] text-muted mt-4 pt-3 border-t border-border/40">
+          🎬 Grava TUDO segunda-feira (8h-12h, batelada). ✂️ Edita quarta-feira (8h-12h). Cross-post Instagram + TikTok.
         </p>
       </Card>
 
