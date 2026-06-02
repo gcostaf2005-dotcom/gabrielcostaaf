@@ -1,8 +1,12 @@
-// Rotina diária — Gabriel v6
-// Treinos 5x/sem (Seg/Ter/Qua/Sex/Sáb) — Quinta descanso
-// Cold outreach SEMPRE à tarde (13-15h) · Follow-up 15-16h
-// Estudos profundos APENAS fim de semana (4h sáb + 2h dom = 6h)
-// Conteúdo: Seg grava curtos · Qua edita curtos · Sáb grava YouTube · Dom edita YouTube
+// Rotina diária — Gabriel v7
+// Dias úteis (Seg/Ter/Qua/Sex): manhã = acordar + gratidão + treino + leitura,
+//   8h-18h = bloco comercial fixo (follow-ups → cold calls CNDA → conteúdo →
+//   métricas → almoço → pendências ads → cold calls Vexum), noite = faculdade.
+// Quinta: BNI 6h-10h (sem treino) + follow-up BNI, depois bloco comercial à tarde.
+// Sábado: estudo profundo de Claude Code (5h+4h) + análise de métricas.
+// Domingo: estudo Claude Code de manhã + tarde de YouTube (gravar/editar 3 vídeos)
+//   e planejamento dos reels da semana seguinte.
+// Treino 4x/sem (Seg/Ter/Qua/Sex) — Quinta BNI, fim de semana estudo.
 // "A vida é feita de constantes desequilíbrios"
 
 export type Categoria =
@@ -16,6 +20,8 @@ export type Categoria =
   | "conteudo"
   | "youtube"
   | "edicao"
+  | "metricas"
+  | "ads"
   | "faculdade"
   | "deslocamento"
   | "refeicao"
@@ -41,13 +47,13 @@ export type TemaDia = {
 };
 
 export const TEMA_DIA: Record<number, TemaDia> = {
-  1: { nome: "Gravação Curtos", emoji: "🎬", cor: "#a855f7" },
-  2: { nome: "Trabalho Profundo", emoji: "💼", cor: "#5b8def" },
-  3: { nome: "Edição Curtos", emoji: "✂️", cor: "#f59e0b" },
-  4: { nome: "BNI + Descanso treino", emoji: "🤝", cor: "#22c55e" },
-  5: { nome: "Revisão Semanal", emoji: "📊", cor: "#06b6d4" },
-  6: { nome: "YouTube + Estudos IA", emoji: "🎥", cor: "#ef4444" },
-  0: { nome: "Edição YT + Planejamento", emoji: "🌙", cor: "#8b5cf6" },
+  1: { nome: "Comercial — Follow-up & Cold", emoji: "💼", cor: "#5b8def" },
+  2: { nome: "Comercial — Follow-up & Cold", emoji: "💼", cor: "#5b8def" },
+  3: { nome: "Comercial — Follow-up & Cold", emoji: "💼", cor: "#5b8def" },
+  4: { nome: "BNI + Comercial", emoji: "🤝", cor: "#22c55e" },
+  5: { nome: "Comercial — Follow-up & Cold", emoji: "💼", cor: "#5b8def" },
+  6: { nome: "Estudos Claude Code", emoji: "🤖", cor: "#ef4444" },
+  0: { nome: "YouTube + Planejamento", emoji: "🎥", cor: "#8b5cf6" },
 };
 
 export const CATEGORIA_COR: Record<Categoria, string> = {
@@ -61,6 +67,8 @@ export const CATEGORIA_COR: Record<Categoria, string> = {
   conteudo: "#a855f7",
   youtube: "#ff0000",
   edicao: "#f59e0b",
+  metricas: "#0ea5e9",
+  ads: "#f97316",
   faculdade: "#06b6d4",
   deslocamento: "#737373",
   refeicao: "#84cc16",
@@ -76,11 +84,13 @@ export const CATEGORIA_LABEL: Record<Categoria, string> = {
   leitura: "Leitura",
   estudos: "Estudos",
   trabalho: "Trabalho",
-  outreach: "Cold Outreach",
+  outreach: "Cold Calls",
   followup: "Follow-up",
-  conteudo: "Gravação",
+  conteudo: "Conteúdo",
   youtube: "YouTube",
   edicao: "Edição",
+  metricas: "Métricas",
+  ads: "Ads",
   faculdade: "Faculdade",
   deslocamento: "Deslocamento",
   refeicao: "Refeição",
@@ -90,16 +100,17 @@ export const CATEGORIA_LABEL: Record<Categoria, string> = {
   sono: "Sono",
 };
 
-// ===== MANHÃ PADRÃO (Seg/Ter/Qua/Sex — Quinta tem BNI no lugar) =====
+// ===== MANHÃ PADRÃO (Seg/Ter/Qua/Sex — acordar + gratidão + treino + leitura) =====
 const MANHA_PADRAO: BlocoDia[] = [
   {
     inicio: "04:45",
     fim: "05:00",
-    titulo: "Acordar + ritual rápido",
+    titulo: "Acordar + gratidão + ritual rápido",
     categoria: "ritual",
     conselheiro: "Marco Aurélio",
-    principio: "Sem snooze. O dia é seu antes de ser de qualquer um.",
-    detalhes: "Água 500ml. Roupa de treino. SEM celular nos primeiros 30min.",
+    principio: "Sem snooze. Começa o dia agradecendo, antes de qualquer cobrança.",
+    detalhes:
+      "Água 500ml. 3 gratidões (mental ou no journal). Roupa de treino. SEM celular nos primeiros 30min.",
   },
   {
     inicio: "05:00",
@@ -137,42 +148,93 @@ const MANHA_PADRAO: BlocoDia[] = [
   },
 ];
 
-// ===== TARDE COMERCIAL (PADRÃO TODO DIA ÚTIL) — Cold + Follow-up =====
-const TARDE_COMERCIAL: BlocoDia[] = [
+// ===== BLOCO COMERCIAL (Seg/Ter/Qua/Sex — 8h às 18h) =====
+const COMERCIAL_DIA: BlocoDia[] = [
+  {
+    inicio: "08:00",
+    fim: "08:30",
+    titulo: "🔁 Follow-ups CNDA (30min)",
+    categoria: "followup",
+    conselheiro: "Alex Hormozi",
+    principio: "Abre o dia no 'lembrei de você'. Follow-up vale mais que cold novo.",
+    detalhes: "Leads quentes CNDA: responder, agendar calls, mandar materiais. Zero msg nova aqui.",
+  },
+  {
+    inicio: "08:30",
+    fim: "09:00",
+    titulo: "🔁 Follow-ups Vexum (30min)",
+    categoria: "followup",
+    conselheiro: "Alex Hormozi",
+    principio: "Mesmo ritual, agora no pipeline jurídico.",
+    detalhes: "Leads quentes Vexum (escritórios): retomar conversas, agendar demos, enviar propostas.",
+  },
+  {
+    inicio: "09:00",
+    fim: "10:30",
+    titulo: "📞 Cold Calls CNDA (1h30)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Manhã = energia máxima pra ligação fria. Volume gera reunião.",
+    detalhes: "Incorporadoras (foco Nordeste/Recife) + ICP serviço. Meta de ligações conectadas no bloco.",
+  },
+  {
+    inicio: "10:30",
+    fim: "11:30",
+    titulo: "🎬 Criação de conteúdo (Sinapse · Vexum · CNDA)",
+    categoria: "conteudo",
+    conselheiro: "Hormozi",
+    principio: "Conteúdo todo dia alimenta as 3 marcas. Bateladar quando possível.",
+    detalhes: "Roteiros/reels/posts. Rotaciona foco entre Sinapse, Vexum e CNDA conforme a semana.",
+  },
+  {
+    inicio: "11:30",
+    fim: "12:30",
+    titulo: "📊 Métricas de tráfego — CNDA + Vexum",
+    categoria: "metricas",
+    conselheiro: "Ray Dalio",
+    principio: "O que não se mede, não se gerencia. Olhar números antes de almoçar.",
+    detalhes: "CPL, CTR, gasto, leads por campanha. Anota o que vai virar ação no bloco de ads à tarde.",
+  },
+  {
+    inicio: "12:30",
+    fim: "13:00",
+    titulo: "Almoço",
+    categoria: "refeicao",
+    conselheiro: "Sêneca",
+    principio: "Pausa real. Sem tela.",
+  },
   {
     inicio: "13:00",
     fim: "15:00",
-    titulo: "💼 Cold Outreach (2h)",
-    categoria: "outreach",
-    conselheiro: "Alex Hormozi",
-    principio: "Cold outreach é OBRIGATÓRIO todo dia útil. À tarde, sem exceção.",
-    detalhes:
-      "50-80 mensagens (WhatsApp + LinkedIn). Lanche às 15h (no fim do bloco, sem parar fluxo).",
+    titulo: "🛠️ Pendências de Ads — CNDA + Vexum (2h)",
+    categoria: "ads",
+    conselheiro: "Bezos",
+    principio: "Agir nos dados da manhã: ajustar campanhas, criativos, públicos.",
+    detalhes: "Pausar o que não performa, escalar o que converte, subir criativos novos, corrigir setups.",
   },
   {
     inicio: "15:00",
-    fim: "16:00",
-    titulo: "🔁 Follow-up dedicado (1h)",
-    categoria: "followup",
-    conselheiro: "Hormozi",
-    principio: "Follow-up vale MAIS que cold novo. Dinheiro tá no 'lembrei de você'.",
-    detalhes:
-      "Responder leads quentes, agendar calls, mandar materiais. ZERO mensagem nova aqui.",
+    fim: "18:00",
+    titulo: "📞 Cold Calls Vexum (3h)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Bloco mais longo do dia = mais conversas com escritórios. Volume e consistência.",
+    detalhes: "Escritórios de advocacia. Ticket R$3-4k/mês recorrente. Anota cada lead e próximo passo.",
   },
 ];
 
-// ===== NOITE PADRÃO (Seg-Qui — Sex tem revisão diferente) =====
+// ===== NOITE PADRÃO (Seg-Sex — jantar + faculdade) =====
 const NOITE_PADRAO: BlocoDia[] = [
   {
-    inicio: "17:30",
-    fim: "18:00",
-    titulo: "Jantar + deslocamento pra faculdade",
+    inicio: "18:00",
+    fim: "18:30",
+    titulo: "Jantar rápido + deslocamento pra faculdade",
     categoria: "refeicao",
     conselheiro: "Epicuro",
-    principio: "Come antes da aula pra não perder energia.",
+    principio: "Come antes da aula pra não perder energia. Faculdade começa 18h — jantar é no caminho.",
   },
   {
-    inicio: "18:00",
+    inicio: "18:30",
     fim: "22:00",
     titulo: "Faculdade",
     categoria: "faculdade",
@@ -194,120 +256,40 @@ const NOITE_PADRAO: BlocoDia[] = [
     titulo: "Sono (6h15)",
     categoria: "sono",
     conselheiro: "Jeff Bezos",
-    principio: "Piso aceitável. Compensa no fim de semana (8h30).",
+    principio: "Piso aceitável. Compensa no fim de semana.",
   },
 ];
 
-// ===== SEGUNDA — Gravação Reels/TikTok =====
+// ===== SEGUNDA =====
 export const ROTINA_SEGUNDA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  {
-    inicio: "08:00",
-    fim: "12:00",
-    titulo: "🎬 GRAVAÇÃO Reels/TikTok + Stories da semana (4h)",
-    categoria: "conteudo",
-    conselheiro: "Hormozi",
-    principio: "Bateladar é a ÚNICA forma. Grava 5-7 Reels + Stories de seg-dom.",
-    detalhes:
-      "Setup uma vez (luz, fundo, micro). Roteiros prontos. Cross-post Instagram + TikTok. Lanche 9h sem parar.",
-  },
-  {
-    inicio: "12:00",
-    fim: "13:00",
-    titulo: "Almoço + descomprimir",
-    categoria: "refeicao",
-    conselheiro: "Sêneca",
-    principio: "Pausa REAL. Sem tela. 15min de caminhada depois.",
-  },
-  ...TARDE_COMERCIAL,
-  {
-    inicio: "16:00",
-    fim: "17:30",
-    titulo: "Trabalho extra / Pendências",
-    categoria: "trabalho",
-    conselheiro: "Bezos",
-    principio: "Flex: calls que vieram, propostas, organização.",
-    detalhes: "Tarefa que não cabe nos outros blocos. Newsletter IA da tarde se sobrar tempo.",
-  },
+  ...COMERCIAL_DIA,
   ...NOITE_PADRAO,
 ];
 
-// ===== TERÇA — Trabalho Profundo =====
+// ===== TERÇA =====
 export const ROTINA_TERCA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  {
-    inicio: "08:00",
-    fim: "12:00",
-    titulo: "💼 Trabalho Profundo (4h)",
-    categoria: "trabalho",
-    conselheiro: "Jeff Bezos",
-    principio: "Manhã = Deep Work. Calls importantes, propostas, decisões.",
-    detalhes:
-      "Calls de venda agendadas, propostas, estratégia, fechamentos pendentes. Lanche 9h.",
-  },
-  {
-    inicio: "12:00",
-    fim: "13:00",
-    titulo: "Almoço",
-    categoria: "refeicao",
-    conselheiro: "Sêneca",
-    principio: "Pausa REAL.",
-  },
-  ...TARDE_COMERCIAL,
-  {
-    inicio: "16:00",
-    fim: "17:30",
-    titulo: "Trabalho extra / Pendências",
-    categoria: "trabalho",
-    conselheiro: "Bezos",
-    principio: "Flex: organização, calls extras, materiais.",
-  },
+  ...COMERCIAL_DIA,
   ...NOITE_PADRAO,
 ];
 
-// ===== QUARTA — Edição Reels/TikTok =====
+// ===== QUARTA =====
 export const ROTINA_QUARTA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  {
-    inicio: "08:00",
-    fim: "12:00",
-    titulo: "✂️ EDIÇÃO Reels/TikTok (4h Deep Work)",
-    categoria: "edicao",
-    conselheiro: "Cal Newport",
-    principio: "Deep Work em bloco contínuo. Edita TUDO de uma vez.",
-    detalhes:
-      "Modo avião, fone. Edita 5-7 vídeos curtos. Cortes, legendas, capa. Cross-post. Lanche 9h.",
-  },
-  {
-    inicio: "12:00",
-    fim: "13:00",
-    titulo: "Almoço",
-    categoria: "refeicao",
-    conselheiro: "Sêneca",
-    principio: "Pausa.",
-  },
-  ...TARDE_COMERCIAL,
-  {
-    inicio: "16:00",
-    fim: "17:30",
-    titulo: "Programar postagens + Pendências",
-    categoria: "edicao",
-    conselheiro: "Cal Newport",
-    principio: "Agenda Reels/TikTok da semana toda hoje. Sai de quarta = semana resolvida.",
-    detalhes: "Programar via Meta Business Suite ou outro. Confirmar legendas finais.",
-  },
+  ...COMERCIAL_DIA,
   ...NOITE_PADRAO,
 ];
 
-// ===== QUINTA — BNI 6h-10h · Descanso de treino =====
+// ===== QUINTA — BNI 6h-10h · sem treino · comercial à tarde =====
 export const ROTINA_QUINTA: BlocoDia[] = [
   {
     inicio: "04:45",
     fim: "05:00",
-    titulo: "Acordar — dia de BNI (sem academia hoje)",
+    titulo: "Acordar + gratidão — dia de BNI (sem academia hoje)",
     categoria: "ritual",
     conselheiro: "Marco Aurélio",
-    principio: "Descanso de treino. Mente afiada pro BNI.",
+    principio: "Descanso de treino. 3 gratidões e mente afiada pro BNI.",
     detalhes: "Roupa social. Revisa pitch 30s.",
   },
   {
@@ -340,8 +322,7 @@ export const ROTINA_QUINTA: BlocoDia[] = [
     titulo: "🤝 BNI (4h completas)",
     categoria: "bni",
     conselheiro: "Hormozi",
-    principio:
-      "Bloco LONGO. Networking + pitch + ouvir todos + pedir indicações cirúrgicas.",
+    principio: "Bloco LONGO. Networking + pitch + ouvir todos + pedir indicações cirúrgicas.",
     detalhes:
       "Pitch 30s afiado. Anota TODO negócio. Conversas paralelas valem mais que evento estruturado.",
   },
@@ -355,121 +336,122 @@ export const ROTINA_QUINTA: BlocoDia[] = [
   },
   {
     inicio: "10:30",
-    fim: "12:00",
-    titulo: "🤝 Follow-up BNI INTENSIVO (1h30)",
+    fim: "11:30",
+    titulo: "🤝 Follow-up BNI + CNDA/Vexum (intensivo)",
     categoria: "followup",
     conselheiro: "Hormozi",
     principio: "Follow-up BNI no MESMO DIA = ouro. Dia seguinte perde 70%.",
     detalhes:
-      "WhatsApp pros membros relevantes. Agenda calls. Manda materiais. Convite pra cafézinhos.",
+      "WhatsApp pros membros relevantes + leads quentes CNDA/Vexum. Agenda calls, manda materiais, convida pra cafézinho.",
   },
   {
-    inicio: "12:00",
-    fim: "13:00",
-    titulo: "Almoço",
-    categoria: "refeicao",
-    conselheiro: "Sêneca",
-    principio: "Pausa.",
-  },
-  ...TARDE_COMERCIAL,
-  {
-    inicio: "16:00",
-    fim: "17:30",
-    titulo: "Pendências / Trabalho extra",
-    categoria: "trabalho",
-    conselheiro: "Bezos",
-    principio: "Flex pós-BNI. Organização e propostas geradas.",
-  },
-  ...NOITE_PADRAO,
-];
-
-// ===== SEXTA — Trabalho + REVISÃO SEMANAL sagrada =====
-export const ROTINA_SEXTA: BlocoDia[] = [
-  ...MANHA_PADRAO,
-  {
-    inicio: "08:00",
-    fim: "12:00",
-    titulo: "💼 Trabalho Profundo + Fechamento da semana (4h)",
-    categoria: "trabalho",
-    conselheiro: "Bezos",
-    principio: "Última manhã. Fecha tudo que ficou em aberto.",
-    detalhes: "Calls finais, propostas pendentes, follow-ups da semana. Lanche 9h.",
-  },
-  {
-    inicio: "12:00",
-    fim: "13:00",
-    titulo: "Almoço",
-    categoria: "refeicao",
-    conselheiro: "Sêneca",
-    principio: "Pausa.",
-  },
-  ...TARDE_COMERCIAL,
-  {
-    inicio: "16:00",
-    fim: "17:30",
-    titulo: "📊 REVISÃO SEMANAL (sagrado)",
-    categoria: "revisao",
+    inicio: "11:30",
+    fim: "12:30",
+    titulo: "📊 Métricas de tráfego — CNDA + Vexum",
+    categoria: "metricas",
     conselheiro: "Ray Dalio",
-    principio:
-      "O que NÃO se mede, não se gerencia. Revisão = você no comando, não no improviso.",
-    detalhes:
-      "Checklist: (1) Métricas comerciais — outreach total, respostas, calls, fechamentos R$. (2) Conteúdo — Reels gravados/editados/postados, YouTube. (3) Pipeline — cada lead, próximo passo. (4) Estudos — 1 framework IA testado, 1 ferramenta nova. (5) Pessoal — treinos (meta 5x), sono, leitura. (6) 3 VITÓRIAS / 3 LIÇÕES / 3 AJUSTES. (7) MITs da próxima semana (3 por dia).",
-  },
-  ...NOITE_PADRAO,
-];
-
-// ===== SÁBADO — YouTube + Estudos IA (4h firmes) =====
-export const ROTINA_SABADO: BlocoDia[] = [
-  {
-    inicio: "06:30",
-    fim: "07:00",
-    titulo: "Acordar (dormiu 8h30)",
-    categoria: "ritual",
-    conselheiro: "Marco Aurélio",
-    principio: "Disciplina sem rigidez. Mesmo descanso é treinado.",
+    principio: "Mesmo na quinta os números não esperam.",
+    detalhes: "CPL, CTR, gasto, leads. Anota o que vira ação no bloco de ads.",
   },
   {
-    inicio: "07:00",
-    fim: "08:30",
-    titulo: "Academia (treino mais pesado — 5º da semana)",
-    categoria: "academia",
-    conselheiro: "Marco Aurélio",
-    principio: "Sábado pode puxar — sem pressa pra trabalhar.",
-  },
-  {
-    inicio: "08:30",
-    fim: "10:30",
-    titulo: "Leitura longa — LIVRO FÍSICO (2h)",
-    categoria: "leitura",
-    conselheiro: "Bill Gates",
-    principio: "Think Week. Leitura PROFUNDA. Livro inteiro no fim de semana.",
-  },
-  {
-    inicio: "10:30",
+    inicio: "12:30",
     fim: "13:00",
-    titulo: "🎥 GRAVAÇÃO YouTube (vídeo longo)",
-    categoria: "youtube",
-    conselheiro: "Hormozi",
-    principio: "1 vídeo de qualidade > 10 amadores. Setup completo.",
-    detalhes: "Grava 1-2 vídeos longos. Roteiro pronto antes (planejou domingo).",
+    titulo: "Almoço",
+    categoria: "refeicao",
+    conselheiro: "Sêneca",
+    principio: "Pausa real.",
   },
   {
     inicio: "13:00",
-    fim: "14:00",
-    titulo: "Almoço + tempo livre",
+    fim: "15:00",
+    titulo: "🛠️ Pendências de Ads — CNDA + Vexum (2h)",
+    categoria: "ads",
+    conselheiro: "Bezos",
+    principio: "Agir nos dados: ajustar campanhas, criativos, públicos.",
+    detalhes: "Pausar o que não performa, escalar o que converte, subir criativos novos.",
+  },
+  {
+    inicio: "15:00",
+    fim: "18:00",
+    titulo: "📞 Cold Calls Vexum (3h)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Mesmo após BNI, a tarde de Vexum é sagrada. Volume gera reunião.",
+    detalhes: "Escritórios de advocacia. Anota cada lead e próximo passo.",
+  },
+  ...NOITE_PADRAO,
+];
+
+// ===== SEXTA =====
+export const ROTINA_SEXTA: BlocoDia[] = [
+  ...MANHA_PADRAO,
+  ...COMERCIAL_DIA,
+  ...NOITE_PADRAO,
+];
+
+// ===== SÁBADO — Estudo profundo de Claude Code + métricas =====
+export const ROTINA_SABADO: BlocoDia[] = [
+  {
+    inicio: "05:30",
+    fim: "05:45",
+    titulo: "Acordar + gratidão",
+    categoria: "ritual",
+    conselheiro: "Marco Aurélio",
+    principio: "Fim de semana também tem hora de acordar. 3 gratidões.",
+    detalhes: "Água. Sem snooze. Lembrete: vou mandar mensagens de outreach ao longo do dia (8h-18h).",
+  },
+  {
+    inicio: "05:45",
+    fim: "06:15",
+    titulo: "Café da manhã",
+    categoria: "refeicao",
+    conselheiro: "Sêneca",
+    principio: "Café tranquilo, sem pressa de fim de semana.",
+  },
+  {
+    inicio: "06:15",
+    fim: "07:00",
+    titulo: "Leitura — LIVRO FÍSICO (45min)",
+    categoria: "leitura",
+    conselheiro: "Bill Gates",
+    principio: "Aquece a mente antes do estudo profundo.",
+  },
+  {
+    inicio: "07:00",
+    fim: "12:00",
+    titulo: "🤖 ESTUDO Claude Code PROFUNDO (5h)",
+    categoria: "estudos",
+    conselheiro: "Naval Ravikant",
+    principio: "Bloco SAGRADO. Estudo ATIVO: docs, exercícios, construir algo real com Claude Code.",
+    detalhes:
+      "Mãos na massa: agentes, skills, workflows, MCP. Constrói algo aplicável às empresas. Mantém mensagens de outreach rodando em paralelo (8h-18h).",
+  },
+  {
+    inicio: "12:00",
+    fim: "12:30",
+    titulo: "Almoço",
     categoria: "refeicao",
     conselheiro: "Epicuro",
-    principio: "Pausa real. Família/amigos.",
+    principio: "Pausa real.",
+  },
+  {
+    inicio: "12:30",
+    fim: "14:00",
+    titulo: "📊 Análise de métricas de tráfego — CNDA + Vexum (1h30)",
+    categoria: "metricas",
+    conselheiro: "Ray Dalio",
+    principio: "Revisar a semana de tráfego com calma. Visão de dono, não de operador.",
+    detalhes:
+      "CPL, CTR, gasto, leads e conversões da semana nas 2 contas. Define ajustes pra segunda. Segue mandando mensagens (8h-18h).",
   },
   {
     inicio: "14:00",
     fim: "18:00",
-    titulo: "🤖 ESTUDO IA PROFUNDO (4h firmes)",
+    titulo: "🤖 ESTUDO Claude Code (4h)",
     categoria: "estudos",
     conselheiro: "Naval Ravikant",
-    principio: "Bloco SAGRADO. Estudo ATIVO (notas, exercícios, projeto pessoal).",
-    detalhes:
-      "Curso de IA + framework + livro técnico. Não é só ler — é praticar. Constrói algo aplicável ao trabalho.",
+    principio: "Segunda dose do dia. 9h de Claude Code no sábado = vantagem composta.",
+    detalhes: "Continua o projeto da manhã. Documenta o que aprendeu.",
   },
   {
     inicio: "18:00",
@@ -481,23 +463,23 @@ export const ROTINA_SABADO: BlocoDia[] = [
   },
   {
     inicio: "18:30",
+    fim: "20:30",
+    titulo: "Leitura (2h)",
+    categoria: "leitura",
+    conselheiro: "Sócrates",
+    principio: "Noite de leitura longa. Examine a semana.",
+  },
+  {
+    inicio: "20:30",
     fim: "21:00",
-    titulo: "Tempo de conexão (família/amigos)",
-    categoria: "descanso",
-    conselheiro: "Epicuro",
-    principio: "Pessoas importantes presentes.",
+    titulo: "Wind down + journaling",
+    categoria: "ritual",
+    conselheiro: "Matthew Walker",
+    principio: "Desliga as telas. Prepara o sono.",
   },
   {
     inicio: "21:00",
-    fim: "22:00",
-    titulo: "Leitura + journaling",
-    categoria: "leitura",
-    conselheiro: "Sócrates",
-    principio: "Examine a semana.",
-  },
-  {
-    inicio: "22:00",
-    fim: "06:30",
+    fim: "05:30",
     titulo: "Sono (8h30)",
     categoria: "sono",
     conselheiro: "Matthew Walker",
@@ -505,100 +487,100 @@ export const ROTINA_SABADO: BlocoDia[] = [
   },
 ];
 
-// ===== DOMINGO — Edição YouTube + Estudos IA + PLANEJAMENTO sagrado =====
+// ===== DOMINGO — Estudo Claude Code de manhã + YouTube à tarde =====
 export const ROTINA_DOMINGO: BlocoDia[] = [
   {
-    inicio: "06:30",
-    fim: "07:00",
-    titulo: "Acordar (dormiu 8h30)",
+    inicio: "05:30",
+    fim: "05:45",
+    titulo: "Acordar + gratidão",
     categoria: "ritual",
     conselheiro: "Marco Aurélio",
-    principio: "Último dia antes da semana. Carregue baterias.",
+    principio: "Último dia antes da semana. Começa agradecendo.",
+    detalhes: "Água. Sem snooze.",
+  },
+  {
+    inicio: "05:45",
+    fim: "06:15",
+    titulo: "Café da manhã",
+    categoria: "refeicao",
+    conselheiro: "Sêneca",
+    principio: "Café tranquilo.",
+  },
+  {
+    inicio: "06:15",
+    fim: "07:00",
+    titulo: "Leitura — LIVRO FÍSICO (45min)",
+    categoria: "leitura",
+    conselheiro: "Bill Gates",
+    principio: "Continua o livro de sábado.",
   },
   {
     inicio: "07:00",
-    fim: "08:30",
-    titulo: "Descanso ativo (cardio leve / caminhada)",
-    categoria: "descanso",
-    conselheiro: "Sêneca",
-    principio: "Domingo é dia de DESCANSO de treino. Cardio leve OK.",
-    detalhes: "Caminhada, alongamento, mobilidade. Sem academia pesada.",
+    fim: "12:00",
+    titulo: "🤖 ESTUDO Claude Code PROFUNDO (5h)",
+    categoria: "estudos",
+    conselheiro: "Naval Ravikant",
+    principio: "Mesma rotina de sábado de manhã. Estudo ATIVO, mãos na massa.",
+    detalhes: "Agentes, skills, workflows, MCP. Constrói algo aplicável às empresas.",
   },
   {
-    inicio: "08:30",
-    fim: "10:30",
-    titulo: "Leitura longa — LIVRO FÍSICO (2h)",
-    categoria: "leitura",
-    conselheiro: "Bill Gates",
-    principio: "Continua o livro de sábado. Termina hoje?",
-  },
-  {
-    inicio: "10:30",
-    fim: "13:00",
-    titulo: "✂️ EDIÇÃO YouTube (vídeo longo)",
-    categoria: "edicao",
-    conselheiro: "Cal Newport",
-    principio: "Edição de vídeo longo exige Deep Work. 2h30 sem interrupção.",
-    detalhes: "Edita o vídeo do sábado. Thumbnail, descrição, tags. Sai pronto pra postar.",
-  },
-  {
-    inicio: "13:00",
-    fim: "14:00",
+    inicio: "12:00",
+    fim: "12:30",
     titulo: "Almoço",
     categoria: "refeicao",
     conselheiro: "Epicuro",
-    principio: "Pausa.",
+    principio: "Pausa real.",
   },
   {
-    inicio: "14:00",
-    fim: "16:00",
-    titulo: "🤖 ESTUDO IA (2h)",
-    categoria: "estudos",
-    conselheiro: "Naval Ravikant",
-    principio: "Mais 2h domingo = 6h de IA no fim de semana totais.",
-    detalhes: "Newsletter semanal (Mollick, Latent Space, Import AI) + framework leve.",
-  },
-  {
-    inicio: "16:00",
-    fim: "18:00",
-    titulo: "📊 PLANEJAMENTO SEMANAL (sagrado)",
-    categoria: "revisao",
-    conselheiro: "Ray Dalio",
-    principio: "Sem ele, a semana vira improviso.",
+    inicio: "12:30",
+    fim: "17:30",
+    titulo: "🎥 GRAVAR + EDITAR YouTube — 3 vídeos da semana (5h)",
+    categoria: "youtube",
+    conselheiro: "Hormozi",
+    principio: "Tarde de domingo é YouTube. Grava E edita os 3 vídeos da semana de uma vez.",
     detalhes:
-      "Pega revisão de sexta. Define MITs de cada dia. Bate agenda. Escreve roteiros de Reels da semana. Lista 100 prospects pro cold outreach.",
+      "Setup completo (luz, fundo, micro). Roteiros prontos. Grava 3 vídeos + edita (cortes, legendas, thumbnail, descrição). Sai pronto pra postar na semana.",
   },
   {
-    inicio: "18:00",
+    inicio: "17:30",
     fim: "18:30",
+    titulo: "🔎 Planejar reels da semana seguinte (1h)",
+    categoria: "conteudo",
+    conselheiro: "Cal Newport",
+    principio: "Define hoje quais reels vou gravar na semana — entra na segunda sabendo o que postar.",
+    detalhes: "Lista os reels da próxima semana (Sinapse/Vexum/CNDA), ganchos e referências.",
+  },
+  {
+    inicio: "18:30",
+    fim: "19:00",
     titulo: "Jantar",
     categoria: "refeicao",
     conselheiro: "Epicuro",
     principio: "Refeição com presença.",
   },
   {
-    inicio: "18:30",
-    fim: "21:00",
-    titulo: "Conexão / descanso real",
-    categoria: "descanso",
-    conselheiro: "Epicuro",
-    principio: "Última noite antes da semana.",
-  },
-  {
-    inicio: "21:00",
-    fim: "22:00",
+    inicio: "19:00",
+    fim: "20:30",
     titulo: "Leitura + journaling semanal",
     categoria: "leitura",
     conselheiro: "Sócrates",
-    principio: "Entra na segunda afiado.",
+    principio: "Entra na segunda afiado. Examine a semana.",
   },
   {
-    inicio: "22:00",
-    fim: "06:30",
-    titulo: "Sono (8h30)",
+    inicio: "20:30",
+    fim: "21:00",
+    titulo: "Wind down (SEM TELA)",
+    categoria: "ritual",
+    conselheiro: "Matthew Walker",
+    principio: "Prepara o sono pra acordar 4:45 na segunda.",
+  },
+  {
+    inicio: "21:00",
+    fim: "04:45",
+    titulo: "Sono (7h45)",
     categoria: "sono",
     conselheiro: "Matthew Walker",
-    principio: "Última noite de 8h30.",
+    principio: "Última noite antes da semana.",
   },
 ];
 
