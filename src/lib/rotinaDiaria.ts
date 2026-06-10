@@ -1,13 +1,14 @@
-// Rotina diária — Gabriel v7
+// Rotina diária — Gabriel v8.1 ("Maker Morning" — Hormozi real + Código Dasi)
 // Dias úteis (Seg/Ter/Qua/Sex): manhã = acordar + gratidão + treino + leitura,
-//   8h-18h = bloco comercial fixo (follow-ups → cold calls CNDA → conteúdo →
-//   métricas → almoço → pendências ads → cold calls Vexum), noite = faculdade.
-// Quinta: BNI 6h-10h (sem treino) + follow-up BNI, depois bloco comercial à tarde.
-// Sábado: estudo profundo de Claude Code (5h+4h) + análise de métricas.
-// Domingo: estudo Claude Code de manhã + tarde de YouTube (gravar/editar 3 vídeos)
-//   e planejamento dos reels da semana seguinte.
+//   8h-18h = follow-ups unificados (30min) → BLOCO SAGRADO outreach incorporadora
+//   (2h, horário nobre, alvo único até 15/ago) → conteúdo → outreach Vexum →
+//   almoço → tarde (Seg/Qua/Sex: propostas/automações · Ter/Qui: batch ads+métricas)
+//   → cold calls Vexum, noite = faculdade + ALVO DO DIA escrito na noite anterior.
+// Quinta: BNI 6h-10h (sem treino) + follow-up BNI NO MESMO DIA + sagrado compacto.
+// Sábado: estudo Claude Code (regra Hormozi: termina com 1 ATIVO ENTREGUE).
+// Domingo: estudo manhã + YouTube tarde + revisão com PLACAR (conversas c/ decisor).
 // Treino 4x/sem (Seg/Ter/Qua/Sex) — Quinta BNI, fim de semana estudo.
-// "A vida é feita de constantes desequilíbrios"
+// "Prova antes de palco. Aceleração constante numa pista só."
 
 export type Categoria =
   | "ritual"
@@ -148,52 +149,47 @@ const MANHA_PADRAO: BlocoDia[] = [
   },
 ];
 
-// ===== BLOCO COMERCIAL (Seg/Ter/Qua/Sex — 8h às 18h) =====
-const COMERCIAL_DIA: BlocoDia[] = [
+// ===== MANHÃ COMERCIAL (Seg/Ter/Qua/Sex — 8h às 13h) =====
+const COMERCIAL_MANHA: BlocoDia[] = [
   {
     inicio: "08:00",
     fim: "08:30",
-    titulo: "🔁 Follow-ups CNDA (30min)",
+    titulo: "🔁 Follow-ups CNDA + Vexum (unificados, 30min)",
     categoria: "followup",
     conselheiro: "Alex Hormozi",
     principio: "Abre o dia no 'lembrei de você'. Follow-up vale mais que cold novo.",
-    detalhes: "Leads quentes CNDA: responder, agendar calls, mandar materiais. Zero msg nova aqui.",
+    detalhes:
+      "Leads quentes das 2 empresas num bloco só: responder, agendar calls, mandar materiais. Zero msg nova aqui. Timer de 30min — acabou, acabou.",
   },
   {
     inicio: "08:30",
-    fim: "09:00",
-    titulo: "🔁 Follow-ups Vexum (30min)",
-    categoria: "followup",
-    conselheiro: "Alex Hormozi",
-    principio: "Mesmo ritual, agora no pipeline jurídico.",
-    detalhes: "Leads quentes Vexum (escritórios): retomar conversas, agendar demos, enviar propostas.",
-  },
-  {
-    inicio: "09:00",
     fim: "10:30",
-    titulo: "📞 Cold Calls CNDA (1h30)",
+    titulo: "🎯 BLOCO SAGRADO — Outreach Incorporadora (2h)",
     categoria: "outreach",
     conselheiro: "Alex Hormozi",
-    principio: "Manhã = energia máxima pra ligação fria. Volume gera reunião.",
-    detalhes: "Incorporadoras (foco Nordeste/Recife) + ICP serviço. Meta de ligações conectadas no bloco.",
+    principio:
+      "\"Quando você remove tudo, o que sobra é o trabalho.\" 2h de horário nobre no ALVO ÚNICO até 15/ago.",
+    detalhes:
+      "Cold calls + WhatsApp + social selling pra incorporadoras (Recife/Nordeste). Celular em modo dead phone: só pra prospectar. Nenhuma outra aba. O ALVO do dia se resolve AQUI. Métrica: conversas reais com decisor.",
   },
   {
     inicio: "10:30",
     fim: "11:30",
     titulo: "🎬 Criação de conteúdo (Sinapse · Vexum · CNDA)",
     categoria: "conteudo",
-    conselheiro: "Hormozi",
-    principio: "Conteúdo todo dia alimenta as 3 marcas. Bateladar quando possível.",
-    detalhes: "Roteiros/reels/posts. Rotaciona foco entre Sinapse, Vexum e CNDA conforme a semana.",
+    conselheiro: "Irmãos Dasi",
+    principio: "Prova antes de palco: todo conteúdo lastreado em algo que você FEZ.",
+    detalhes:
+      "Roteiros/reels/posts. Rotaciona Sinapse, Vexum e CNDA. Prioriza demo prática de IA (estilo João Vitor) + pergunta-espelho na legenda (estilo Dasi).",
   },
   {
     inicio: "11:30",
     fim: "12:30",
-    titulo: "📊 Métricas de tráfego — CNDA + Vexum",
-    categoria: "metricas",
-    conselheiro: "Ray Dalio",
-    principio: "O que não se mede, não se gerencia. Olhar números antes de almoçar.",
-    detalhes: "CPL, CTR, gasto, leads por campanha. Anota o que vai virar ação no bloco de ads à tarde.",
+    titulo: "📞 Outreach Vexum — manhã (1h)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Hora que era de olhar dashboard virou hora de gerar pipeline.",
+    detalhes: "Cold calls/WhatsApp pra escritórios de advocacia. Métricas agora são batch de Ter/Qui à tarde.",
   },
   {
     inicio: "12:30",
@@ -203,14 +199,19 @@ const COMERCIAL_DIA: BlocoDia[] = [
     conselheiro: "Sêneca",
     principio: "Pausa real. Sem tela.",
   },
+];
+
+// ===== TARDE PADRÃO (Seg/Qua/Sex — propostas e construção) =====
+const TARDE_PADRAO: BlocoDia[] = [
   {
     inicio: "13:00",
     fim: "15:00",
-    titulo: "🛠️ Pendências de Ads — CNDA + Vexum (2h)",
-    categoria: "ads",
-    conselheiro: "Bezos",
-    principio: "Agir nos dados da manhã: ajustar campanhas, criativos, públicos.",
-    detalhes: "Pausar o que não performa, escalar o que converte, subir criativos novos, corrigir setups.",
+    titulo: "🛠️ Propostas + automações de cliente + pendências (2h)",
+    categoria: "trabalho",
+    conselheiro: "Alex Hormozi",
+    principio: "Ordene as tarefas pela ALAVANCAGEM: proposta de R$32,5K > dashboard.",
+    detalhes:
+      "Propostas pra incorporadora, automações/entregas de cliente, pendências operacionais. O que tiver mais alavancagem primeiro.",
   },
   {
     inicio: "15:00",
@@ -218,7 +219,30 @@ const COMERCIAL_DIA: BlocoDia[] = [
     titulo: "📞 Cold Calls Vexum (3h)",
     categoria: "outreach",
     conselheiro: "Alex Hormozi",
-    principio: "Bloco mais longo do dia = mais conversas com escritórios. Volume e consistência.",
+    principio: "Bloco mais longo do dia = mais conversas com escritórios. Volume anula a sorte.",
+    detalhes: "Escritórios de advocacia. Ticket R$3-4k/mês recorrente. Anota cada lead e próximo passo.",
+  },
+];
+
+// ===== TARDE BATCH (Ter/Qui — ads + métricas 2x/semana) =====
+const TARDE_BATCH: BlocoDia[] = [
+  {
+    inicio: "13:00",
+    fim: "15:00",
+    titulo: "📊🛠️ BATCH Ads + Métricas — CNDA + Vexum (2h, 2x/sem)",
+    categoria: "ads",
+    conselheiro: "Ray Dalio",
+    principio: "Métricas 2x/semana com ação na hora > olhar dashboard todo dia sem agir.",
+    detalhes:
+      "CPL, CTR, gasto, leads das 2 contas + ação imediata: pausar o que não performa, escalar o que converte, subir criativos. Análise e execução no mesmo bloco.",
+  },
+  {
+    inicio: "15:00",
+    fim: "18:00",
+    titulo: "📞 Cold Calls Vexum (3h)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Bloco mais longo do dia = mais conversas com escritórios. Volume anula a sorte.",
     detalhes: "Escritórios de advocacia. Ticket R$3-4k/mês recorrente. Anota cada lead e próximo passo.",
   },
 ];
@@ -244,11 +268,12 @@ const NOITE_PADRAO: BlocoDia[] = [
   {
     inicio: "22:10",
     fim: "22:30",
-    titulo: "Volta + wind down (SEM TELA)",
+    titulo: "Volta + ALVO DE AMANHÃ + wind down (SEM TELA)",
     categoria: "ritual",
-    conselheiro: "Matthew Walker",
-    principio: "Wind down de 20min é não-negociável.",
-    detalhes: "Journaling 3min. Luzes baixas.",
+    conselheiro: "Alex Hormozi",
+    principio: "\"Clear idea of what I need to do from night before.\" O dia de amanhã começa agora.",
+    detalhes:
+      "Escreve O ALVO de amanhã (1 resultado, com número, verificável — ex: '3 conversas com decisor de incorporadora'). Depois journaling 3min, luzes baixas.",
   },
   {
     inicio: "22:30",
@@ -263,21 +288,24 @@ const NOITE_PADRAO: BlocoDia[] = [
 // ===== SEGUNDA =====
 export const ROTINA_SEGUNDA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  ...COMERCIAL_DIA,
+  ...COMERCIAL_MANHA,
+  ...TARDE_PADRAO,
   ...NOITE_PADRAO,
 ];
 
-// ===== TERÇA =====
+// ===== TERÇA (tarde batch ads+métricas) =====
 export const ROTINA_TERCA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  ...COMERCIAL_DIA,
+  ...COMERCIAL_MANHA,
+  ...TARDE_BATCH,
   ...NOITE_PADRAO,
 ];
 
 // ===== QUARTA =====
 export const ROTINA_QUARTA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  ...COMERCIAL_DIA,
+  ...COMERCIAL_MANHA,
+  ...TARDE_PADRAO,
   ...NOITE_PADRAO,
 ];
 
@@ -347,11 +375,12 @@ export const ROTINA_QUINTA: BlocoDia[] = [
   {
     inicio: "11:30",
     fim: "12:30",
-    titulo: "📊 Métricas de tráfego — CNDA + Vexum",
-    categoria: "metricas",
-    conselheiro: "Ray Dalio",
-    principio: "Mesmo na quinta os números não esperam.",
-    detalhes: "CPL, CTR, gasto, leads. Anota o que vira ação no bloco de ads.",
+    titulo: "🎯 BLOCO SAGRADO compacto — Outreach Incorporadora (1h)",
+    categoria: "outreach",
+    conselheiro: "Alex Hormozi",
+    principio: "Mesmo no dia de BNI, o alvo único recebe sua hora.",
+    detalhes:
+      "Cold calls/WhatsApp pra incorporadoras. Aproveita o embalo do BNI: indicações da manhã entram aqui ainda quentes.",
   },
   {
     inicio: "12:30",
@@ -364,11 +393,12 @@ export const ROTINA_QUINTA: BlocoDia[] = [
   {
     inicio: "13:00",
     fim: "15:00",
-    titulo: "🛠️ Pendências de Ads — CNDA + Vexum (2h)",
+    titulo: "📊🛠️ BATCH Ads + Métricas — CNDA + Vexum (2h, 2x/sem)",
     categoria: "ads",
-    conselheiro: "Bezos",
-    principio: "Agir nos dados: ajustar campanhas, criativos, públicos.",
-    detalhes: "Pausar o que não performa, escalar o que converte, subir criativos novos.",
+    conselheiro: "Ray Dalio",
+    principio: "Segunda dose semanal do batch: análise e ação no mesmo bloco.",
+    detalhes:
+      "CPL, CTR, gasto, leads + ação imediata: pausar o que não performa, escalar o que converte, subir criativos.",
   },
   {
     inicio: "15:00",
@@ -385,7 +415,8 @@ export const ROTINA_QUINTA: BlocoDia[] = [
 // ===== SEXTA =====
 export const ROTINA_SEXTA: BlocoDia[] = [
   ...MANHA_PADRAO,
-  ...COMERCIAL_DIA,
+  ...COMERCIAL_MANHA,
+  ...TARDE_PADRAO,
   ...NOITE_PADRAO,
 ];
 
@@ -447,11 +478,13 @@ export const ROTINA_SABADO: BlocoDia[] = [
   {
     inicio: "14:00",
     fim: "18:00",
-    titulo: "🤖 ESTUDO Claude Code (4h)",
+    titulo: "🤖 ESTUDO Claude Code (4h) — termina com 1 ATIVO ENTREGUE",
     categoria: "estudos",
-    conselheiro: "Naval Ravikant",
-    principio: "Segunda dose do dia. 9h de Claude Code no sábado = vantagem composta.",
-    detalhes: "Continua o projeto da manhã. Documenta o que aprendeu.",
+    conselheiro: "Alex Hormozi",
+    principio:
+      "\"Se você não executa o que consome, não está aprendendo — está procrastinando.\"",
+    detalhes:
+      "Continua o projeto da manhã. REGRA: o sábado só conta se terminar com 1 ativo pronto (automação, demo, ferramenta pra cliente ou pro funil Sinapse). Documenta o que aprendeu.",
   },
   {
     inicio: "18:00",
@@ -561,10 +594,12 @@ export const ROTINA_DOMINGO: BlocoDia[] = [
   {
     inicio: "19:00",
     fim: "20:30",
-    titulo: "Leitura + journaling semanal",
-    categoria: "leitura",
-    conselheiro: "Sócrates",
-    principio: "Entra na segunda afiado. Examine a semana.",
+    titulo: "Leitura + REVISÃO SEMANAL com placar",
+    categoria: "revisao",
+    conselheiro: "Irmãos Dasi",
+    principio: "Cadência de recompensa visível = anti-burnout. Erro é mensalidade, não fracasso.",
+    detalhes:
+      "Placar da semana: (1) nº de conversas com decisor de incorporadora, (2) qual foi o erro da semana e o que ele ensinou que uma vitória esconderia, (3) alvos do dia batidos (x/7). Depois leitura.",
   },
   {
     inicio: "20:30",
