@@ -116,11 +116,12 @@ const MANHA_PADRAO: BlocoDia[] = [
   {
     inicio: "05:00",
     fim: "06:30",
-    titulo: "Academia (podcast/audiobook OK)",
+    titulo: "Academia (podcast/audiobook OK) — ou bloco substituto",
     categoria: "academia",
     conselheiro: "Marco Aurélio",
     principio: "Disciplina física antes de qualquer trabalho mental.",
-    detalhes: "1h treino + deslocamento.",
+    detalhes:
+      "1h treino + deslocamento. Dia sem treino (conforme o momento): o horário NÃO vira sono nem celular — vira leitura longa ou adiantar o alvo do dia (pesquisa de incorporadoras, lista de ligações pronta).",
   },
   {
     inicio: "06:30",
@@ -278,10 +279,12 @@ const NOITE_PADRAO: BlocoDia[] = [
   {
     inicio: "22:30",
     fim: "04:45",
-    titulo: "Sono (6h15)",
+    titulo: "Sono (alvo 22:30 — acordar 4:45 é FIXO)",
     categoria: "sono",
     conselheiro: "Jeff Bezos",
-    principio: "Piso aceitável. Compensa no fim de semana.",
+    principio: "4:45 não negocia, independente da hora que dormir. Quem paga a conta de dormir tarde é a noite, nunca a manhã.",
+    detalhes:
+      "Dormiu mais tarde? Acorda 4:45 do mesmo jeito — o ajuste é antecipar o sono nos dias seguintes, não atrasar o despertar.",
   },
 ];
 
