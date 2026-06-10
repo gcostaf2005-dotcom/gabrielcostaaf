@@ -292,6 +292,8 @@ export function RotinaView() {
             ["Ray Dalio", "Principles + journaling"],
             ["Bill Gates", "Think Week (fim de semana)"],
             ["Matthew Walker", "Sono é base de tudo"],
+            ["Fernando Dasi", "Prova antes de palco — 17 anos no silêncio"],
+            ["Eduardo Dasi", "Pista longa, aceleração constante + pele em jogo"],
           ].map(([nome, p]) => (
             <div key={nome} className="flex items-center gap-2 py-1">
               <span className="font-medium text-foreground/80">{nome}</span>
